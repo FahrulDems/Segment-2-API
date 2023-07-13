@@ -68,19 +68,17 @@ public class AccountService
             }
 
             var universityEntity = _universityRepository.GetByCodeName(registerDto.UniversityCode, registerDto.UniversityName);
-            University university = new University
+            if(universityEntity == null)
             {
-                Guid = new Guid(),
-                Code = registerDto.UniversityCode,
-                Name = registerDto.UniversityName,
-                CreatedDate = DateTime.Now,
-                ModifiedDate = DateTime.Now
-            };
-
-            var createdUniversity = _universityRepository.Create(university);
-            if (createdUniversity is null)
-            {
-                return null;
+                var university = new University
+                {
+                    Guid = new Guid(),
+                    Code = registerDto.UniversityCode,
+                    Name = registerDto.UniversityName,
+                    CreatedDate = DateTime.Now,
+                    ModifiedDate = DateTime.Now
+                }; 
+                universityEntity = _universityRepository.Create(university);
             }
 
             Education education = new Education
@@ -89,7 +87,7 @@ public class AccountService
                 Major = registerDto.Major,
                 Degree = registerDto.Degree,
                 Gpa = registerDto.Gpa,
-                UniversityGuid = university.Guid,
+                UniversityGuid = universityEntity.Guid,
                 CreatedDate = DateTime.Now,
                 ModifiedDate = DateTime.Now
 
@@ -140,8 +138,8 @@ public class AccountService
                 Major = createdEducation.Major,
                 Degree = createdEducation.Degree,
                 Gpa = createdEducation.Gpa,
-                UniversityCode = createdUniversity.Code,
-                UniversityName = createdUniversity.Name
+                UniversityCode = universityEntity.Code,
+                UniversityName = universityEntity.Name
             };
 
             transaction.Commit();

@@ -1,4 +1,5 @@
-﻿using API.Utilities.Enums;
+﻿using API.Utilities;
+using API.Utilities.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace API.DTOs.Employee;
@@ -13,7 +14,8 @@ public class GetEmployeeDto
 
     [Required]
     public string FirstName { get; set; }
-    public string LastName { get; set; }
+
+    public string? LastName { get; set; }
 
     [Required]
     public DateTime BirthDate { get; set; }

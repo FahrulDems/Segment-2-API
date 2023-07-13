@@ -515,7 +515,7 @@ function Update() {
     });
 }
 
-function showGenderChart() {
+function showChart() {
     // Mendapatkan data dari API
     $.ajax({
         url: "https://localhost:7256/api/employees", // Sesuaikan URL sesuai dengan endpoint API Anda
@@ -547,7 +547,7 @@ function showGenderChart() {
             data: {
                 labels: ['Female', 'Male'],
                 datasets: [{
-                    data: [femalePercentage, malePercentage],
+                    data: [femaleCount, maleCount],
                     backgroundColor: ['#FF6384', '#36A2EB'],
                     hoverBackgroundColor: ['#FF6384', '#36A2EB']
                 }]
@@ -559,12 +559,79 @@ function showGenderChart() {
                         label: function (tooltipItem, data) {
                             let label = data.labels[tooltipItem.index];
                             let value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
-                            return label + ': ' + value.toFixed(2) + '% (' + Math.round(value * totalCount / 100) + ')';
+                            let percentage = ((value / totalCount) * 100).toFixed(2);
+                            return label + ': ' + value + ' (' + percentage + '%)';
                         }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    labels: {
+                        render: 'percentage',
+                        fontColor: '#FFFFFF',
+                        fontSize: 12,
+                        fontStyle: 'bold',
+                        position: 'outside'
                     }
                 }
             }
         });
+
+        // Membuka modal setelah grafik selesai dibuat
+        $('#chartModal').modal('show');
+    });
+
+    $.ajax({
+        url: "https://localhost:7256/api/universities", // Sesuaikan URL sesuai dengan endpoint API Anda
+        type: "GET",
+        dataType: "json"
+    }).done(res => {
+        // Mendapatkan data universitas
+        let universities = res.data;
+
+        // Menghitung jumlah universitas dengan nama yang sama
+        let universityCounts = {};
+        universities.forEach(university => {
+            if (university.name in universityCounts) {
+                universityCounts[university.name]++;
+            } else {
+                universityCounts[university.name] = 1;
+            }
+        });
+
+        // Mengambil nama universitas yang unik dan kode universitas
+        let uniqueUniversityNames = Object.keys(universityCounts);
+        let universityCodes = uniqueUniversityNames.map(name => universityCounts[name]);
+
+        // Membuat grafik menggunakan Chart.js
+        let ctx = document.getElementById('universityChart').getContext('2d');
+        /*let universityChart = */new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: uniqueUniversityNames,
+                datasets: [{
+                    label: 'University Counts',
+                    data: universityCodes,
+                    backgroundColor: '#36A2EB',
+                    hoverBackgroundColor: '#36A2EB'
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            stepSize: 1,
+                            precision: 0
+                        }
+                    }]
+                }
+            }
+        });
+
         // Membuka modal setelah grafik selesai dibuat
         $('#chartModal').modal('show');
     }).fail(error => {
@@ -572,7 +639,24 @@ function showGenderChart() {
     });
 }
 
-function showUniversityChart() {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*function showUniversityChart() {
     // Mendapatkan data dari API
     $.ajax({
         url: "https://localhost:7256/api/universities", // Sesuaikan URL sesuai dengan endpoint API Anda
@@ -582,18 +666,28 @@ function showUniversityChart() {
         // Mendapatkan data universitas
         let universities = res.data;
 
-        // Mengambil nama universitas dan kode universitas
-        let universityNames = universities.map(university => university.name);
-        let universityCodes = universities.map(university => university.code);
+        // Menghitung jumlah universitas dengan nama yang sama
+        let universityCounts = {};
+        universities.forEach(university => {
+            if (university.name in universityCounts) {
+                universityCounts[university.name]++;
+            } else {
+                universityCounts[university.name] = 1;
+            }
+        });
+
+        // Mengambil nama universitas yang unik dan kode universitas
+        let uniqueUniversityNames = Object.keys(universityCounts);
+        let universityCodes = uniqueUniversityNames.map(name => universityCounts[name]);
 
         // Membuat grafik menggunakan Chart.js
         let ctx = document.getElementById('universityChart').getContext('2d');
         let universityChart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: universityNames,
+                labels: uniqueUniversityNames,
                 datasets: [{
-                    label: 'University Codes',
+                    label: 'University Counts',
                     data: universityCodes,
                     backgroundColor: '#36A2EB',
                     hoverBackgroundColor: '#36A2EB'
@@ -602,9 +696,13 @@ function showUniversityChart() {
             options: {
                 responsive: true,
                 scales: {
-                    y: {
-                        beginAtZero: true
-                    }
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            stepSize: 1,
+                            precision: 0
+                        }
+                    }]
                 }
             }
         });
@@ -614,39 +712,7 @@ function showUniversityChart() {
     }).fail(error => {
         alert("Failed to fetch data from API.");
     });
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+}*/
 
 
 

@@ -23,7 +23,7 @@ public class RegisterDto
 
     [Required]
     [EmailAddress]
-    [EmployeeDuplicateProperty("string", "Email")]
+    [EmployeeDuplicateProperty("string", nameof(Email))]
     public string Email { get; set; }
 
     [Phone]

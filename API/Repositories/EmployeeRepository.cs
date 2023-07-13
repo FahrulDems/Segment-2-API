@@ -19,7 +19,7 @@ public class EmployeeRepository : GeneralRepository<Employee>, IEmployeeReposito
 
     public Employee? GetByEmailAndPhoneNumber(string data)
     {
-        return _context.Set<Employee>().FirstOrDefault(e => e.PhoneNumber == data && e.Email == data);
+        return _context.Set<Employee>().FirstOrDefault(e => e.PhoneNumber == data || e.Email == data);
     }
 }
 
