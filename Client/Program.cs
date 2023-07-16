@@ -1,12 +1,35 @@
 using API.Services;
 using Client.Contracts;
 using Client.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllersWithViews();
+builder.Services.AddSession();
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.RequireHttpsMetadata = false;
+        options.SaveToken = true;
+        options.TokenValidationParameters = new()
+        {
+            ValidateAudience = true,
+            ValidAudience = builder.Configuration["JWT:Audience"],
+            ValidateIssuer = true,
+            ValidIssuer = builder.Configuration["JWT:Issuer"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"])),
+            ValidateLifetime = true,
+            ClockSkew = TimeSpan.Zero
+        };
+    });
 
 var app = builder.Build();
 // Configure the HTTP request pipeline.
@@ -17,7 +40,10 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseSession();
+
 app.UseHttpsRedirection();
+
 app.UseStaticFiles();
 
 app.UseRouting();

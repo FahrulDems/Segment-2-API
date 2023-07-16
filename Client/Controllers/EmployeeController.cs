@@ -3,6 +3,7 @@ using API.Models;
 using Client.Contracts;
 using Microsoft.AspNetCore.Mvc;
 
+
 namespace Client.Controllers
 {
     public class EmployeeController : Controller
@@ -63,6 +64,7 @@ namespace Client.Controllers
             {
                 employee.Guid = result.Data.Guid;
             }
+            TempData["Success"] = "Data berhasil dihapus";
             return RedirectToAction(nameof(Index));
         }
 
@@ -105,7 +107,6 @@ namespace Client.Controllers
             if (result.Status == "200")
             {
                 TempData["Success"] = "Successfully updated";
-                return RedirectToAction(nameof(Index));
             }
 
             else
