@@ -38,8 +38,11 @@
                         <li style="background-color:black; border-radius: 0.45rem; margin-right: 8px" class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-controller="Latihan3" asp-action="Index">Latihan Ajax</a>
                         </li>
-                        <li style="background-color:black; border-radius: 0.45rem" class="nav-item">
+                        <li style="background-color:black; border-radius: 0.45rem; margin-right: 8px" class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-controller="Employee" asp-action="Index">Latihan Razor</a>
+                        </li>
+                        <li style="background-color:black; border-radius: 0.45rem; margin-right: 8px" class="nav-item">
+                            <a class="nav-link text-light" asp-area="" asp-controller="Account" asp-action="Index">Account Web Page</a>
                         </li>
                     </ul>
                 </div>
@@ -75,5 +78,6 @@
     <!--Sitejs-->
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+
 </body>
 </html>

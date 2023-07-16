@@ -639,6 +639,48 @@ function showChart() {
     });
 }
 
+$(document).ready(function () {
+    moment.locale('id');
+    $('#tableEmployee').DataTable({        
+        dom: "<'ui grid'" +
+            "<'row'" + "<'col-3'l>" + "<'col-6 mt--2'B>" + "<'col-3'f>" + ">" +
+            "<'row dt-table'" + "<'col'tr>" + ">" +
+            "<'row'" + "<'col-4'i>" + "<'col-8'p>" + ">" +
+            ">",
+        buttons: [
+            'colvis', 'copy',
+            {
+                extend: 'excelHtml5',
+                title: 'Excel',
+                text: 'Export to excel',
+                className: "btn-primary",
+                //Columns to export
+                exportOptions: {
+                    columns: [0, 1, 2, 3, 4, 5, 6, 7]
+                }
+            },
+            {
+                extend: 'pdfHtml5',
+                title: 'PDF',
+                text: 'Export to PDF',
+                //Columns to export
+                exportOptions: {
+                    columns: [0, 1, 2, 3, 4, 5, 6, 7]
+                }
+            },
+            {
+                extend: 'print',
+                exportOptions: {
+                    columns: ':visible'
+                }
+            }
+        ],
+        autoWidth: false,
+        
+    });
+});
+
+
 
 
 
