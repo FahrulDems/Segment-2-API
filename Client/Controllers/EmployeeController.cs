@@ -1,6 +1,8 @@
 ﻿using API.DTOs.Employee;
 using API.Models;
+using API.Utilities.Enums;
 using Client.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -15,6 +17,7 @@ namespace Client.Controllers
             this.repository = repository;
         }
 
+        [Authorize(Roles = $"{nameof(RoleLevel.Admin)}")]
         public async Task<IActionResult> Index()
         {
             var result = await repository.Get();

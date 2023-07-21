@@ -1,5 +1,7 @@
 ﻿using API.DTOs.Account;
+using API.Utilities.Enums;
 using Client.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Client.Controllers
@@ -73,10 +75,15 @@ namespace Client.Controllers
             else if (result.Status == "OK")
             {
                 HttpContext.Session.SetString("JWToken", result.Data);
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Employee");
             }
             return View();
         }
 
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index", "Account");
+        }
     }
 }

@@ -1,4 +1,6 @@
-﻿using Client.Models;
+﻿using API.Utilities.Enums;
+using Client.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -13,6 +15,7 @@ namespace Client.Controllers
             _logger = logger;
         }
 
+        [AllowAnonymous]
         public IActionResult Index()
         {
             return View();
